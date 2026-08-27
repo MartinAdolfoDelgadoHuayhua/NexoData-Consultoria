@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="es-PE">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexo Data — Analítica, Riesgo y Optimización Comercial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0A1628;
+  --navy-2:#122439;
+  --paper:#F5F6F8;
+  --paper-2:#ECEEF1;
+  --ink:#101820;
+  --slate:#4B5A6B;
+  --slate-soft:#7A8794;
+  --risk:#AE3B32;
+  --risk-soft:#F3E3E0;
+  --opt:#1B6E63;
+  --opt-soft:#DFEBE8;
+  --line:rgba(16,24,32,0.12);
+  --line-dark:rgba(245,246,248,0.16);
+  --radius:3px;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:'Inter',sans-serif; font-size:16px; line-height:1.62;
+}
+@media (prefers-reduced-motion: reduce){*{animation-duration:.01ms !important; transition-duration:.01ms !important; scroll-behavior:auto !important;}}
+h1,h2,h3,.display{font-family:'Space Grotesk',sans-serif; font-weight:600; letter-spacing:-0.01em; color:var(--ink);}
+.mono{font-family:'JetBrains Mono',monospace;}
+a{color:inherit; text-decoration:none;}
+svg{display:block; max-width:100%;}
+.wrap{max-width:1200px; margin:0 auto; padding:0 40px;}
+@media (max-width:640px){.wrap{padding:0 22px;}}
+::selection{background:var(--navy); color:var(--paper);}
+:focus-visible{outline:2px solid var(--opt); outline-offset:3px;}
+
+/* NAV */
+header.nav{position:sticky; top:0; z-index:50; background:rgba(245,246,248,0.94); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+.nav-inner{max-width:1200px; margin:0 auto; padding:20px 40px; display:flex; align-items:center; justify-content:space-between;}
+@media (max-width:640px){.nav-inner{padding:16px 22px;}}
+.brand{display:flex; align-items:baseline; gap:8px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.2rem; letter-spacing:-0.01em;}
+.brand .dot{color:var(--opt);}
+.nav-links{display:flex; gap:30px; font-size:0.88rem; font-weight:500; color:var(--slate);}
+.nav-links a:hover{color:var(--navy);}
+@media (max-width:920px){.nav-links{display:none;}}
+.nav-cta{font-size:0.83rem; font-weight:600; padding:11px 20px; background:var(--navy); color:var(--paper); border-radius:var(--radius); transition:background .2s;}
+.nav-cta:hover{background:var(--opt);}
+
+/* HERO */
+.hero{padding:76px 0 0;}
+.hero-inner{display:grid; grid-template-columns:1.05fr 0.95fr; gap:60px; align-items:center; padding-bottom:56px;}
+@media (max-width:940px){.hero-inner{grid-template-columns:1fr; gap:40px;}}
+.eyebrow{font-family:'JetBrains Mono',monospace; font-size:0.76rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--opt); font-weight:600; display:flex; align-items:center; gap:10px; margin-bottom:22px;}
+.eyebrow::before{content:""; width:24px; height:1.5px; background:var(--opt);}
+.hero h1{font-size:clamp(2.2rem,4.4vw,3.3rem); line-height:1.1; margin-bottom:20px; max-width:16ch;}
+.hero p.lead{font-size:1.08rem; color:var(--slate); max-width:48ch; margin-bottom:30px;}
+.hero-ctas{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:34px;}
+.btn{display:inline-flex; align-items:center; gap:8px; padding:14px 24px; font-weight:600; font-size:0.92rem; border-radius:var(--radius); border:1px solid transparent; cursor:pointer; transition:all .2s;}
+.btn-primary{background:var(--navy); color:var(--paper);}
+.btn-primary:hover{background:var(--opt); transform:translateY(-1px);}
+.btn-ghost{border-color:var(--ink); color:var(--ink);}
+.btn-ghost:hover{background:var(--ink); color:var(--paper);}
+.hero-sectors{display:flex; gap:10px; flex-wrap:wrap;}
+.sector-tag{font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:var(--slate-soft); border:1px solid var(--line); padding:6px 11px; border-radius:20px;}
+
+/* hero chart card */
+.frontier-card{background:var(--navy); border-radius:var(--radius); padding:28px 26px 22px; color:var(--paper);}
+.frontier-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px;}
+.frontier-head h4{font-family:'Space Grotesk',sans-serif; font-size:0.95rem; font-weight:600;}
+.frontier-head span{font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:rgba(245,246,248,0.5);}
+.frontier-sub{font-size:0.78rem; color:rgba(245,246,248,0.55); margin-bottom:18px;}
+
+/* stats */
+.stats{border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+.stats-inner{display:grid; grid-template-columns:repeat(4,1fr); padding:26px 0;}
+@media (max-width:700px){.stats-inner{grid-template-columns:repeat(2,1fr); row-gap:22px;}}
+.stat{padding:0 22px; border-left:1px solid var(--line);}
+.stat:first-child{border-left:none;}
+@media (max-width:700px){.stat:nth-child(odd){border-left:none;}}
+.stat-num{font-family:'JetBrains Mono',monospace; font-size:1.7rem; font-weight:600; color:var(--navy); display:block;}
+.stat-label{font-size:0.78rem; color:var(--slate-soft); margin-top:4px;}
+
+/* SECTION SHARED */
+section{padding:100px 0;}
+@media (max-width:700px){section{padding:66px 0;}}
+.section-head{max-width:680px; margin-bottom:52px; display:flex; align-items:flex-start; gap:20px;}
+.section-num{font-family:'JetBrains Mono',monospace; font-size:0.76rem; color:var(--slate-soft); font-weight:600; letter-spacing:0.08em; padding-top:6px; white-space:nowrap;}
+.section-head h2{font-size:clamp(1.8rem,3.2vw,2.35rem); margin-bottom:12px;}
+.section-head p{color:var(--slate); font-size:1.02rem;}
+
+/* FEATURED: RIESGO + OPTIMIZACION */
+.featured-grid{display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line);}
+@media (max-width:860px){.featured-grid{grid-template-columns:1fr;}}
+.featured-card{background:var(--paper); padding:44px 40px;}
+.featured-card.risk{border-top:3px solid var(--risk);}
+.featured-card.opt{border-top:3px solid var(--opt);}
+.featured-icon{width:38px; height:38px; margin-bottom:22px;}
+.featured-card h3{font-size:1.5rem; margin-bottom:14px;}
+.featured-card p.desc{color:var(--slate); font-size:0.98rem; margin-bottom:22px;}
+.featured-list{list-style:none; margin-bottom:26px;}
+.featured-list li{padding:9px 0; border-top:1px solid var(--line); font-size:0.92rem; display:flex; gap:10px;}
+.featured-list li:first-child{border-top:none;}
+.featured-card.risk .featured-list li::before{content:"→"; color:var(--risk); flex-shrink:0;}
+.featured-card.opt .featured-list li::before{content:"→"; color:var(--opt); flex-shrink:0;}
+.featured-tech{font-family:'JetBrains Mono',monospace; font-size:0.74rem; color:var(--slate-soft);}
+.featured-tech b{color:var(--ink); font-weight:600;}
+
+/* SERVICIOS SECUNDARIOS */
+.dark{background:var(--navy); color:var(--paper);}
+.dark h2,.dark h3{color:var(--paper);}
+.dark .section-head p{color:rgba(245,246,248,0.65);}
+.dark .section-num{color:rgba(245,246,248,0.4);}
+.services-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line-dark); border:1px solid var(--line-dark);}
+@media (max-width:860px){.services-grid{grid-template-columns:1fr;}}
+.service-card{background:var(--navy); padding:34px 30px;}
+.service-card h3{font-size:1.08rem; margin-bottom:10px;}
+.service-card p{color:rgba(245,246,248,0.65); font-size:0.9rem;}
+
+/* CASOS */
+.cases{display:flex; flex-direction:column;}
+.case{display:grid; grid-template-columns:100px 1fr auto; gap:26px; align-items:start; padding:34px 0; border-top:1px solid var(--line);}
+.cases .case:last-child{border-bottom:1px solid var(--line);}
+@media (max-width:760px){.case{grid-template-columns:1fr; gap:12px;}}
+.case-tag{font-family:'JetBrains Mono',monospace; font-size:0.72rem; font-weight:700; padding:5px 10px; border-radius:20px; width:fit-content;}
+.case-tag.risk{background:var(--risk-soft); color:var(--risk);}
+.case-tag.opt{background:var(--opt-soft); color:var(--opt);}
+.case-tag.people{background:var(--paper-2); color:var(--slate);}
+.case h3{font-size:1.22rem; margin-bottom:9px;}
+.case p{color:var(--slate); font-size:0.96rem; max-width:62ch;}
+.case-result{text-align:right; white-space:nowrap;}
+@media (max-width:760px){.case-result{text-align:left;}}
+.case-result .num{font-family:'JetBrains Mono',monospace; font-size:1.5rem; font-weight:600; color:var(--navy); display:block;}
+.case-result .label{font-size:0.76rem; color:var(--slate-soft);}
+
+/* CURSOS */
+.courses-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+@media (max-width:900px){.courses-grid{grid-template-columns:1fr;}}
+.course-card{background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:28px; display:flex; flex-direction:column; height:100%;}
+.course-level{font-family:'JetBrains Mono',monospace; font-size:0.7rem; color:var(--slate-soft); text-transform:uppercase; letter-spacing:0.07em; margin-bottom:12px;}
+.course-card h3{font-size:1.12rem; margin-bottom:9px;}
+.course-card p{color:var(--slate); font-size:0.9rem; flex-grow:1; margin-bottom:18px;}
+.course-foot{display:flex; justify-content:space-between; align-items:center; padding-top:14px; border-top:1px solid var(--line);}
+.course-price{font-family:'JetBrains Mono',monospace; font-weight:600; font-size:0.86rem;}
+.course-link{font-size:0.83rem; font-weight:600; color:var(--opt);}
+
+/* SOBRE MI */
+.about{display:grid; grid-template-columns:0.95fr 1.05fr; gap:64px; align-items:start;}
+@media (max-width:860px){.about{grid-template-columns:1fr; gap:32px;}}
+.about-cred{list-style:none; margin-top:24px;}
+.about-cred li{padding:14px 0; border-top:1px solid var(--line); display:flex; justify-content:space-between; gap:16px; font-size:0.9rem;}
+.about-cred li span:first-child{color:var(--slate-soft);}
+.about-cred li span:last-child{font-weight:600; text-align:right;}
+
+/* CONTACTO */
+.contact{background:var(--ink); color:var(--paper);}
+.contact h2{color:var(--paper);}
+.contact-inner{display:grid; grid-template-columns:1fr 1fr; gap:56px;}
+@media (max-width:860px){.contact-inner{grid-template-columns:1fr;}}
+.contact p.lead{color:rgba(245,246,248,0.68); font-size:1.02rem; max-width:44ch; margin-bottom:26px;}
+.contact-channels{display:flex; flex-direction:column;}
+.channel{display:flex; justify-content:space-between; align-items:center; padding:17px 0; border-top:1px solid var(--line-dark); font-size:0.98rem;}
+.contact-channels .channel:last-child{border-bottom:1px solid var(--line-dark);}
+.channel .ch-label{color:rgba(245,246,248,0.5); font-size:0.78rem; font-family:'JetBrains Mono',monospace;}
+.channel .ch-value{font-weight:600;}
+.channel a.ch-value:hover{color:var(--opt);}
+.note{font-size:0.82rem; color:rgba(245,246,248,0.45); margin-top:18px; line-height:1.5;}
+
+form.contact-form{display:flex; flex-direction:column; gap:13px;}
+.contact-form input,.contact-form textarea,.contact-form select{width:100%; background:rgba(245,246,248,0.04); border:1px solid var(--line-dark); color:var(--paper); padding:12px 13px; font-family:'Inter',sans-serif; font-size:0.92rem; border-radius:var(--radius);}
+.contact-form input::placeholder,.contact-form textarea::placeholder{color:rgba(245,246,248,0.35);}
+.contact-form textarea{resize:vertical; min-height:96px;}
+.contact-form label{font-size:0.74rem; color:rgba(245,246,248,0.5); font-family:'JetBrains Mono',monospace; margin-bottom:-7px;}
+.contact-form .btn-primary{margin-top:4px; align-self:flex-start; background:var(--opt);}
+.contact-form .btn-primary:hover{background:#154f47;}
+
+footer{padding:30px 0; text-align:center; font-size:0.8rem; color:var(--slate-soft); border-top:1px solid var(--line);}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">NEXO<span class="dot">·</span>DATA</div>
+    <nav class="nav-links">
+      <a href="#riesgo-opt">Riesgo &amp; Optimización</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#casos">Casos</a>
+      <a href="#cursos">Cursos</a>
+      <a href="#sobre-mi">Sobre mí</a>
+    </nav>
+    <a href="#contacto" class="nav-cta">Agendar llamada</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-inner">
+      <div>
+        <span class="eyebrow">Analítica cuantitativa · Lima, Perú</span>
+        <h1>Modelos que se despliegan, no que se quedan en el notebook.</h1>
+        <p class="lead">Diseño e implemento modelos de riesgo y optimización comercial para empresas que necesitan decisiones defendibles — con el rigor estadístico de la banca y el enfoque práctico de un consultor.</p>
+        <div class="hero-ctas">
+          <a href="#contacto" class="btn btn-primary">Agendar una llamada</a>
+          <a href="#riesgo-opt" class="btn btn-ghost">Ver capacidades técnicas</a>
+        </div>
+        <div class="hero-sectors">
+          <span class="sector-tag">Banca</span>
+          <span class="sector-tag">Seguros</span>
+          <span class="sector-tag">Retail</span>
+          <span class="sector-tag">Telecom</span>
+          <span class="sector-tag">Contact Center</span>
+        </div>
+      </div>
+
+      <div class="frontier-card">
+        <div class="frontier-head"><h4>Frontera margen — capacidad</h4><span class="mono">MIP · SOLVER</span></div>
+        <div class="frontier-sub">Punto óptimo entre margen comercial y capacidad de fuerza de ventas</div>
+        <svg viewBox="0 0 400 220" width="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <line x1="36" y1="10" x2="36" y2="184" stroke="rgba(245,246,248,0.25)" stroke-width="1"/>
+          <line x1="36" y1="184" x2="384" y2="184" stroke="rgba(245,246,248,0.25)" stroke-width="1"/>
+          <text x="10" y="14" fill="rgba(245,246,248,0.4)" font-family="JetBrains Mono" font-size="9">Margen</text>
+          <text x="330" y="204" fill="rgba(245,246,248,0.4)" font-family="JetBrains Mono" font-size="9">Capacidad FFVV</text>
+          <path d="M50,170 C110,168 150,150 190,110 C230,72 280,45 370,30" stroke="rgba(245,246,248,0.28)" stroke-width="1.6" fill="none" stroke-dasharray="3 5"/>
+          <circle cx="50" cy="170" r="3" fill="rgba(245,246,248,0.35)"/>
+          <circle cx="120" cy="158" r="3" fill="rgba(245,246,248,0.35)"/>
+          <circle cx="190" cy="110" r="3" fill="rgba(245,246,248,0.35)"/>
+          <circle cx="260" cy="62" r="3" fill="rgba(245,246,248,0.35)"/>
+          <circle cx="330" cy="38" r="3" fill="rgba(245,246,248,0.35)"/>
+          <g>
+            <circle cx="222" cy="92" r="7" fill="#1B6E63" stroke="#F5F6F8" stroke-width="2"/>
+            <line x1="222" y1="92" x2="270" y2="70" stroke="#1B6E63" stroke-width="1"/>
+            <text x="274" y="74" fill="#F5F6F8" font-family="JetBrains Mono" font-size="10" font-weight="600">óptimo factible</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="wrap stats-inner">
+      <div class="stat"><span class="stat-num mono">6+</span><span class="stat-label">años en analítica bancaria</span></div>
+      <div class="stat"><span class="stat-num mono">MIP</span><span class="stat-label">optimización mixta entera en producción</span></div>
+      <div class="stat"><span class="stat-num mono">7</span><span class="stat-label">pipelines de riesgo y personas implementados</span></div>
+      <div class="stat"><span class="stat-num mono">MITx</span><span class="stat-label">MicroMasters en Statistics &amp; Data Science</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="riesgo-opt">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <div>
+        <h2>Dos capacidades que sostienen todo lo demás</h2>
+        <p>No son reportes ni dashboards descriptivos: son modelos matemáticos que se integran al proceso de decisión, con el mismo estándar de validación que exige un banco.</p>
+      </div>
+    </div>
+    <div class="featured-grid">
+      <div class="featured-card risk">
+        <svg class="featured-icon" viewBox="0 0 40 40" fill="none"><path d="M6 32 L14 20 L20 26 L34 8" stroke="#AE3B32" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><line x1="6" y1="32" x2="34" y2="32" stroke="#AE3B32" stroke-width="1.4" opacity="0.4"/><circle cx="34" cy="8" r="2.6" fill="#AE3B32"/></svg>
+        <h3>Modelos de riesgo</h3>
+        <p class="desc">Cuantifico probabilidad de incumplimiento, rotación o desviación operacional antes de que impacte el resultado — con umbrales de alerta calibrados a tu apetito de riesgo.</p>
+        <ul class="featured-list">
+          <li>Scoring de riesgo crediticio y de contraparte</li>
+          <li>Modelos de sobrevivencia (Weibull/Cox) para rotación y attrition</li>
+          <li>Control estadístico de procesos (SPC) para alertas operacionales tempranas</li>
+          <li>Simulación Monte Carlo de escenarios de estrés</li>
+        </ul>
+        <div class="featured-tech">Stack: <b>Python · scikit-survival · statsmodels · scipy</b></div>
+      </div>
+      <div class="featured-card opt">
+        <svg class="featured-icon" viewBox="0 0 40 40" fill="none"><circle cx="8" cy="30" r="2.4" stroke="#1B6E63" stroke-width="2"/><circle cx="18" cy="20" r="2.4" stroke="#1B6E63" stroke-width="2"/><circle cx="28" cy="24" r="2.4" fill="#1B6E63"/><circle cx="34" cy="10" r="2.4" stroke="#1B6E63" stroke-width="2"/><path d="M8 30 L18 20 L28 24 L34 10" stroke="#1B6E63" stroke-width="1.6" fill="none" stroke-dasharray="2 4"/></svg>
+        <h3>Optimización comercial</h3>
+        <p class="desc">Despliego modelos de programación mixta entera (MIP) que encuentran el punto óptimo entre margen comercial y capacidad de tu fuerza de ventas — no una regla fija, sino un modelo que recalcula cuando cambian las condiciones.</p>
+        <ul class="featured-list">
+          <li>Asignación óptima de cartera / territorios a fuerza de ventas</li>
+          <li>Trade-off margen vs. capacidad instalada (frontera de eficiencia)</li>
+          <li>Dimensionamiento de dotación con teoría de colas (Erlang C)</li>
+          <li>Modelos desplegados como servicio, no como ejercicio puntual</li>
+        </ul>
+        <div class="featured-tech">Stack: <b>PuLP · OR-Tools · CBC/Gurobi · APIs de despliegue</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dark" id="servicios">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <div>
+        <h2>Servicios complementarios</h2>
+        <p>Alrededor de riesgo y optimización, cubro el resto del ciclo de analítica aplicada.</p>
+      </div>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <h3>People Analytics &amp; Workforce Planning</h3>
+        <p>Pronóstico de headcount, simulación de dotación y modelos de rotación para decisiones de RRHH.</p>
+      </div>
+      <div class="service-card">
+        <h3>Scripts y dashboards a medida</h3>
+        <p>Automatización de reportes recurrentes y modelos predictivos (churn, demanda) listos para producción.</p>
+      </div>
+      <div class="service-card">
+        <h3>Consultoría cuantitativa legal</h3>
+        <p>Cálculo de lucro cesante bajo el Código Civil peruano (Art. 1985), con tasas BCRP e informe técnico defendible.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="casos">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <div>
+        <h2>Casos de aplicación</h2>
+        <p>El tipo de problema y de resultado que puedes esperar en cada línea de trabajo.</p>
+      </div>
+    </div>
+    <div class="cases">
+      <div class="case">
+        <span class="case-tag opt">Optimización</span>
+        <div>
+          <h3>Asignación margen — capacidad de fuerza de ventas</h3>
+          <p>Modelo MIP que asigna cartera a la fuerza de ventas maximizando margen sujeto a restricciones reales de capacidad, generando una frontera de eficiencia navegable por el negocio en vez de un único número.</p>
+        </div>
+        <div class="case-result"><span class="num mono">Frontera</span><span class="label">margen vs. capacidad</span></div>
+      </div>
+      <div class="case">
+        <span class="case-tag risk">Riesgo</span>
+        <div>
+          <h3>Pronóstico de dotación con Monte Carlo</h3>
+          <p>Simulación de escenarios de contratación y salida de personal, con umbrales SPC para anticipar déficits de dotación antes de que se conviertan en un problema operativo.</p>
+        </div>
+        <div class="case-result"><span class="num mono">↓ riesgo</span><span class="label">de sub-dotación</span></div>
+      </div>
+      <div class="case">
+        <span class="case-tag risk">Riesgo</span>
+        <div>
+          <h3>Predicción de fuga de clientes (telecom)</h3>
+          <p>Modelo de churn con XGBoost y análisis de sobrevivencia, con interpretabilidad vía SHAP para que el equipo comercial entienda el motivo detrás de cada predicción.</p>
+        </div>
+        <div class="case-result"><span class="num mono">Explicable</span><span class="label">no solo predictivo</span></div>
+      </div>
+      <div class="case">
+        <span class="case-tag people">Capacidad</span>
+        <div>
+          <h3>Dimensionamiento de turnos con ILP + Erlang C</h3>
+          <p>Programación lineal entera combinada con teoría de colas para dimensionar turnos de un contact center al menor costo posible sin sacrificar nivel de servicio.</p>
+        </div>
+        <div class="case-result"><span class="num mono">Turnos</span><span class="label">dimensionados con ILP</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dark" id="cursos">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">04</span>
+      <div>
+        <h2>Cursos y capacitación</h2>
+        <p>Formación práctica para equipos que usan datos en su trabajo diario.</p>
+      </div>
+    </div>
+    <div class="courses-grid">
+      <div class="course-card">
+        <span class="course-level">Nivel intermedio</span>
+        <h3>Optimización comercial aplicada</h3>
+        <p>Cómo modelar problemas de negocio como programas de optimización mixta entera: de la restricción real al modelo matemático desplegable.</p>
+        <div class="course-foot"><span class="course-price mono">A medida</span><a href="#contacto" class="course-link">Consultar →</a></div>
+      </div>
+      <div class="course-card">
+        <span class="course-level">Nivel intermedio</span>
+        <h3>Python para auditoría y validación de modelos</h3>
+        <p>Curso corporativo de tres días: automatización de pruebas de auditoría y validación de modelos, para equipos no técnicos.</p>
+        <div class="course-foot"><span class="course-price mono">A medida</span><a href="#contacto" class="course-link">Consultar →</a></div>
+      </div>
+      <div class="course-card">
+        <span class="course-level">Nivel básico–intermedio</span>
+        <h3>Modelos de riesgo desde cero</h3>
+        <p>Scoring, sobrevivencia y control estadístico de procesos, explicados desde la decisión de negocio que resuelven.</p>
+        <div class="course-foot"><span class="course-price mono">A medida</span><a href="#contacto" class="course-link">Consultar →</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sobre-mi">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">05</span>
+      <div>
+        <h2>Quién está detrás de los modelos</h2>
+      </div>
+    </div>
+    <div class="about">
+      <div>
+        <p style="color:var(--slate); font-size:1.03rem;">Soy Martín Delgado, Senior Data Scientist dentro de la función de People Analytics del banco más grande del Perú. Trabajo en el cruce entre estadística, negocio y comunicación: modelos que un directorio pueda entender y aprobar, no solo admirar en un notebook.</p>
+        <ul class="about-cred">
+          <li><span>Rol actual</span><span>Senior Data Scientist</span></li>
+          <li><span>Formación</span><span>Ing. Estadística e Informática, UNALM</span></li>
+          <li><span>Especialización</span><span>MicroMasters en Statistics &amp; Data Science, MITx / edX</span></li>
+          <li><span>Enfoque</span><span>Riesgo, optimización comercial, workforce planning</span></li>
+        </ul>
+      </div>
+      <div>
+        <svg viewBox="0 0 400 240" width="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <line x1="20" y1="200" x2="380" y2="200" stroke="rgba(16,24,32,0.15)" stroke-width="1"/>
+          <line x1="20" y1="10" x2="20" y2="200" stroke="rgba(16,24,32,0.15)" stroke-width="1"/>
+          <path d="M20,150 Q100,80 180,110 Q260,140 340,50" stroke="#AE3B32" stroke-width="2" fill="none" stroke-dasharray="4 4" opacity="0.7"/>
+          <path d="M20,190 Q100,170 180,140 Q260,90 340,40" stroke="#1B6E63" stroke-width="2.4" fill="none"/>
+          <circle cx="340" cy="40" r="6" fill="#1B6E63"/>
+          <text x="290" y="28" fill="#101820" font-family="JetBrains Mono" font-size="10" font-weight="600">frontera óptima</text>
+          <text x="130" y="75" fill="#AE3B32" font-family="JetBrains Mono" font-size="10" opacity="0.85">umbral de riesgo</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contacto">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num" style="color:rgba(245,246,248,0.4);">06</span>
+      <div><h2>Conversemos sobre tu problema de datos</h2></div>
+    </div>
+    <div class="contact-inner">
+      <div>
+        <p class="lead">Cuéntame qué necesitas resolver — un modelo de riesgo, una asignación óptima de fuerza de ventas, un curso para tu equipo — y te respondo con una propuesta concreta.</p>
+        <div class="contact-channels">
+          <div class="channel"><span class="ch-label">WHATSAPP</span><a class="ch-value" href="https://wa.me/51955534073" target="_blank" rel="noopener">+51 955 534 073</a></div>
+          <div class="channel"><span class="ch-label">EMAIL</span><a class="ch-value" href="mailto:mdelgado1302@outlook.com">mdelgado1302@outlook.com</a></div>
+          <div class="channel"><span class="ch-label">LINKEDIN</span><a class="ch-value" href="https://www.linkedin.com/in/martindelhu13/" target="_blank" rel="noopener">/in/martin-delgado</a></div>
+        </div>
+        <p class="note">Coordinación de pago y facturación vía WhatsApp al +51 955 534 073.</p>
+      </div>
+      <form class="contact-form" onsubmit="event.preventDefault(); window.location.href='mailto:mdelgado1302@outlook.com?subject=' + encodeURIComponent('Consulta desde la web — ' + this.nombre.value) + '&body=' + encodeURIComponent(this.mensaje.value + '\n\nContacto: ' + this.email.value);">
+        <label for="nombre">NOMBRE</label>
+        <input id="nombre" name="nombre" type="text" placeholder="Martin Delgado" required>
+        <label for="email">EMAIL</label>
+        <input id="email" name="email" type="email" placeholder="mdelgado1302@outlook.com" required>
+        <label for="interes">ME INTERESA</label>
+        <select id="interes" name="interes">
+          <option>Modelo de riesgo</option>
+          <option>Optimización comercial (MIP)</option>
+          <option>People Analytics / Workforce Planning</option>
+          <option>Curso o capacitación</option>
+          <option>Otro</option>
+        </select>
+        <label for="mensaje">MENSAJE</label>
+        <textarea id="mensaje" name="mensaje" placeholder="Cuéntame brevemente qué necesitas..." required></textarea>
+        <button type="submit" class="btn btn-primary">Enviar mensaje</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">NEXO DATA · Analítica, riesgo y optimización comercial · Lima, Perú · © 2026</div>
+</footer>
+
+</body>
+</html>
